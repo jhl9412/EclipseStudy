@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Board Register</title>
+<script>
+function btn_register(){
+	document.formRegistry.action='/board/boardRegister'
+	document.formRegistry.submit();
+}
+</script>
+</head>
+<body>
+<form name="formRegistry" method="post" onsubmit() enctype="multipart/form-data">
+작성자 이름 : <input type="text" name="mwriter"><br>
+아이디 : <input type="text" name="userid"><br>
+게시물 제목 : <input type="text" name="mtitle"><br>
+내	용<br>
+<textarea rows="10" cols="100" name="mcontent"></textarea>
+<br>
+<input type="file" name="uploadFile" />
+<br>
+
+<input type="button" value="Regist" onclick="btn_register()">
+
+</form>
+</body>
+</html>

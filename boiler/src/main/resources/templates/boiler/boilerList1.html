@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:"http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>보일러</title>
+</head>
+<body>
+<br><br>
+<h1>사용자 목록 보기</h1>
+
+<table border=1>
+		<tr>
+			<td>보일러 상태</td>
+			<td>보일러 온도</td>
+		</tr>
+		<tbody>
+			<tr th:each="list:${list}">
+				<td><span th:text="${list.status}"></span></td>
+				<td><span th:text="${list.temp}"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

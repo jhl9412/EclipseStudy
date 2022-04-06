@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Board Edit</title>
+<script>
+function btn_modify(){
+	document.formModify.action='/board/boardModify?seqno=[[${view.seqno}]]'
+	document.formModify.submit();
+}
+</script>
+</head>
+<body>
+<form name="formModify" method="post" onsubmit() enctype="multipart/form-data">
+작성자 이름 : <input type="text" name="mwriter" th:value="${view.mwriter}"><br>
+아이디 : <input type="text" name="userid"th:value="${view.userid}"><br>
+게시물 제목 : <input type="text" name="mtitle"th:value="${view.mtitle}"><br>
+내	용<br>
+<textarea rows="10" cols="100" name="mcontent" th:text="${view.mcontent}"></textarea>
+<br>
+<input type="file" name="uploadFile" />
+<br>
+<br>
+<input type="button" value="Edit" onclick="btn_modify()">
+
+</form>
+</body>
+</html>

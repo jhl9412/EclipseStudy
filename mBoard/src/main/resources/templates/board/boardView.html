@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시물 상세 보기</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+function btn_delete(){
+	if(confirm("Delete?")==true)
+		location.href="/board/boardDelete?seqno=[[${view.seqno}]]"
+}
+function fileDownload(){
+	location.href="/board/fileDownload?seqno=[[${view.seqno}]]"
+}
+function replyRegister(){
+	if($("#replycontent").val() ==""){
+		alert("댓글을 입력하세요.");
+		$("#replycontent").focus();
+		return false;
+	}
+	var queryString = $("form[name=formreply]").serialize();
+	$.ajax({
+		url:"/board/Reply?option=I",
+		type:"post",
+		dataType:"json",
+		data: queryString,
+		success: replyList,
+		error: function(data) {
+			alert("서버 오류 문제로 댓글 등록이 실패했습니다.");
+		}
+	});
+	$("#replywriter").val("");
+	$("#replycontent").val("");
+	$("#replywriter").focus();
+}
+
+function replyList(list){
+	var result = "";
+	$.each(list, function(index,item){
+		result +="<div id='replyListView'>";
+		result += "작성자 : " +item["replywriter"];
+		result += "<div style='width:50%; height:auto; border-top:1px solid gray; overflow:auto;'>";
+		result += "<pre>"+ item["replycontent"]+"</pre><div>";
+		result += "</div>";
+		result += "</div><br>";
+	
+	})
+	$("#replyListView").remove();
+	$("#replyList").html(result);
+	
+}
+
+function startupPage(){
+	var queryString ={"seqno":'[[${view.seqno}]]'}
+	$.ajax({
+		url:"/board/Reply?option=L",
+		type:"post",
+		dataType:"json",
+		data:queryString,
+		success:replyList,
+		error:function(data){
+			alert("서버 오류 문제로 댓글 등록이 실패했습니다.");
+		}
+	})
+}
+</script>
+</head>
+<body onload="startupPage()">
+
+<h1>Contents</h1>
+<br><br>
+
+Name : <span th:text="${view.mwriter}"></span><br>
+Title : <span th:text="${view.mtitle}"></span><br>
+Date : <span th:text="${view.mregdate}"></span><br>
+<br>
+<pre th:text="${view.mcontent}" ></pre>
+<br><br>
+<div th:if="${view.filename != NULL}">
+File : <a href="javascript:fileDownload()"><span th:text="${view.filename}"></span></a>
+</div>
+<div th:if="${view.filename == NULL}">
+<span>File : empty</span>
+</div>
+<br><br>
+[<a th:href="@{'/board/boardModify?seqno='+${view.seqno}}">Edit</a>] [<a href="javascript:btn_delete()">Delete</a>]
+[<a href=/board/boardList>List</a>]
+<div class="reply">
+<p>댓글을 작성해 주세요</p>
+<form name ="formreply" method = "post">
+작성자 : <input type = "text" id="replywriter" name = "replywriter"><br>
+<textarea id="replycontent" name="replycontent" cols = 80 row = 5 maxlength = 150 placeholder='글자수:150자 이내'></textarea><br>
+<input type="button" value="댓글등록" onclick = "replyRegister()">
+<input type="hidden" name="seqno" th:value="${view.seqno}">
+</form>
+<hr>
+<div id="replyList" style="width:100%;height:600px;overflow:auto;">
+<div id="replyListview"></div></div>
+</div>
+
+</body>
+</html>
