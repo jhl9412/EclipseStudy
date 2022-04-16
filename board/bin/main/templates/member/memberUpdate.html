@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:"http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>사용자 등록</title>
+
+<script>
+function update(){
+	
+	document.memberUpdate.action = '/member/memberUpdate';
+	document.memberUpdate.submit();
+}
+
+</script>
+
+</head>
+<body>
+
+<form name="memberUpdate" method="post" onsubmit="update()">
+	아이디 : <input type="text" name="userid"><br>
+	이름 : <input type="text" name="username"><br>
+	나이 : <input type="text" name="age"><br>
+	<input type ="button" value="수정" onclick="update()">
+
+	
+</form>
+
+</body>
+</html>
